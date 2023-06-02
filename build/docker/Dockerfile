@@ -64,7 +64,7 @@ RUN bash /tmp/create_links.sh "/home/ctng/x-tools/HOST-${SAMPLE_NAME}/${SAMPLE_N
 USER ctng
 
 RUN tar cvfz "/tmp/${SAMPLE_NAME}-cross.tar.gz" -C "/home/ctng/x-tools" "${SAMPLE_NAME}"
-RUN tar cvfz "/tmp/${SAMPLE_NAME}-native.tar.gz" -C "/home/ctng/x-tools/HOST-${CROSS_SAMPLE}" "${SAMPLE_NAME}"
+RUN tar cvfz "/tmp/${SAMPLE_NAME}-native.tar.gz" -C "/home/ctng/x-tools/HOST-${SAMPLE_NAME}" "${SAMPLE_NAME}"
 
 #RUN touch "/tmp/${SAMPLE_NAME}-cross.tar.gz"
 #RUN touch "/tmp/${SAMPLE_NAME}-native.tar.gz"
