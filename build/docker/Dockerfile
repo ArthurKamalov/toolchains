@@ -32,6 +32,9 @@ RUN useradd -d /home/ctng -m -g $CTNG_GID -u $CTNG_UID -s /bin/bash ctng
 ARG SAMPLE_NAME
 ARG CANADIAN_SAMPLE="${SAMPLE_NAME},${SAMPLE_NAME}"
 
+
+RUN echo "GGG"
+
 WORKDIR /home/ctng
 ADD samples/${SAMPLE_NAME} samples/${SAMPLE_NAME}
 RUN echo "CT_ZLIB_SRC_DEVEL=y" >> "samples/${SAMPLE_NAME}/crosstool.config"
