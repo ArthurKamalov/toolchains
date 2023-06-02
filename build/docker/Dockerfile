@@ -43,7 +43,7 @@ USER ctng
 WORKDIR /home/ctng
 
 RUN ct-ng ${SAMPLE_NAME}
-RUN ct-ng build -j "$(nproc)"
+RUN ct-ng build --quiet -j "$(nproc)"
 
 RUN cp -a "samples/${SAMPLE_NAME}" "samples/${CANADIAN_SAMPLE}"
 RUN echo "CT_CANADIAN=y" >> "samples/${CANADIAN_SAMPLE}/crosstool.config"
@@ -52,7 +52,7 @@ RUN echo 'CT_HOST="${SAMPLE_NAME}"' >> "samples/${CANADIAN_SAMPLE}/crosstool.con
 
 ENV PATH="/home/ctng/x-tools/${SAMPLE_NAME}/bin:${PATH}"
 RUN ct-ng "${CANADIAN_SAMPLE}"
-RUN ct-ng build -j "$(nproc)"
+RUN ct-ng build --quiet -j "$(nproc)"
 
 
 USER root
