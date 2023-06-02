@@ -75,7 +75,7 @@ jobs:
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
           tags: |
-            type=sha,format=long
+            type=sha,format=long,prefix=
             type=ref,event=tag
           images: ${{ env.REGISTRY }}/${{ github.repository }}/${{ matrix.sample_name }}
 
