@@ -35,6 +35,7 @@ ARG CANADIAN_SAMPLE="${SAMPLE_NAME},${SAMPLE_NAME}"
 WORKDIR /home/ctng
 ADD samples/${SAMPLE_NAME} samples/${SAMPLE_NAME}
 RUN echo "CT_ZLIB_SRC_DEVEL=y" >> "samples/${SAMPLE_NAME}/crosstool.config"
+RUN echo "CT_LOG_PROGRESS_BAR=n" >> "samples/${SAMPLE_NAME}/crosstool.config"
 
 
 RUN chown -R ctng /home/ctng
