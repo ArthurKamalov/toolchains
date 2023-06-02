@@ -29,13 +29,8 @@ ARG CTNG_GID=1000
 RUN groupadd -g $CTNG_GID ctng
 RUN useradd -d /home/ctng -m -g $CTNG_GID -u $CTNG_UID -s /bin/bash ctng
 
-RUN echo "FFFFFF"
-
 ARG SAMPLE_NAME
 ARG CANADIAN_SAMPLE="${SAMPLE_NAME},${SAMPLE_NAME}"
-
-
-RUN echo "GGG"
 
 WORKDIR /home/ctng
 ADD samples/${SAMPLE_NAME} samples/${SAMPLE_NAME}
@@ -56,23 +51,23 @@ RUN echo "CT_CANADIAN=y" >> "samples/${CANADIAN_SAMPLE}/crosstool.config"
 RUN echo 'CT_HOST="${SAMPLE_NAME}"' >> "samples/${CANADIAN_SAMPLE}/crosstool.config"
 
 
-#ENV PATH="/home/ctng/x-tools/${SAMPLE_NAME}/bin:${PATH}"
-#RUN ct-ng "${CANADIAN_SAMPLE}"
-#RUN ct-ng build --quiet -j "$(nproc)"
+ENV PATH="/home/ctng/x-tools/${SAMPLE_NAME}/bin:${PATH}"
+RUN ct-ng "${CANADIAN_SAMPLE}"
+RUN ct-ng build --quiet -j "$(nproc)"
 
 
-#USER root
-#ADD create_links.sh /tmp/create_links.sh
-#RUN bash /tmp/create_links.sh "/home/ctng/x-tools/HOST-${SAMPLE_NAME}/${SAMPLE_NAME}" "${SAMPLE_NAME}"
+USER root
+ADD create_links.sh /tmp/create_links.sh
+RUN bash /tmp/create_links.sh "/home/ctng/x-tools/HOST-${SAMPLE_NAME}/${SAMPLE_NAME}" "${SAMPLE_NAME}"
 
 
 USER ctng
 
-#RUN tar cvfz "/tmp/${SAMPLE_NAME}-cross.tar.gz" -C "/home/ctng/x-tools" "${SAMPLE_NAME}"
-#RUN tar cvfz "/tmp/${SAMPLE_NAME}-native.tar.gz" -C "/home/ctng/x-tools/HOST-${SAMPLE_NAME}" "${SAMPLE_NAME}"
+RUN tar cvfz "/tmp/${SAMPLE_NAME}-cross.tar.gz" -C "/home/ctng/x-tools" "${SAMPLE_NAME}"
+RUN tar cvfz "/tmp/${SAMPLE_NAME}-native.tar.gz" -C "/home/ctng/x-tools/HOST-${SAMPLE_NAME}" "${SAMPLE_NAME}"
 
-RUN touch "/tmp/${SAMPLE_NAME}-cross.tar.gz"
-RUN touch "/tmp/${SAMPLE_NAME}-native.tar.gz"
+#RUN touch "/tmp/${SAMPLE_NAME}-cross.tar.gz"
+#RUN touch "/tmp/${SAMPLE_NAME}-native.tar.gz"
 
 
 
