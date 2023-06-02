@@ -62,28 +62,10 @@ RUN bash /tmp/create_links.sh "/home/ctng/x-tools/${SAMPLE_NAME}" "${SAMPLE_NAME
 RUN bash /tmp/create_links.sh "/home/ctng/x-tools/HOST-${SAMPLE_NAME}/${SAMPLE_NAME}" "${SAMPLE_NAME}"
 
 
-USER ctng
-
-RUN tar cfz "/tmp/${SAMPLE_NAME}-cross.tar.gz" -C "/home/ctng/x-tools" "${SAMPLE_NAME}"
-RUN tar cfz "/tmp/${SAMPLE_NAME}-native.tar.gz" -C "/home/ctng/x-tools/HOST-${SAMPLE_NAME}" "${SAMPLE_NAME}"
-
-#RUN touch "/tmp/${SAMPLE_NAME}-cross.tar.gz"
-#RUN touch "/tmp/${SAMPLE_NAME}-native.tar.gz"
-
-
-
-FROM ubuntu:22.04 as ddd
-ARG SAMPLE_NAME
-COPY --from=build /tmp/${SAMPLE_NAME}-cross.tar.gz /tmp
-COPY --from=build /tmp/${SAMPLE_NAME}-native.tar.gz /tmp
-
-RUN apt update && apt install -y tar
-RUN mkdir -p /opt/x-tools
-RUN tar xfvz /tmp/${SAMPLE_NAME}-native.tar.gz -C /opt/x-tools
-
-
 FROM ubuntu:22.04
-COPY --from=ddd /opt/x-tools /opt/x-tools
+ARG SAMPLE_NAME
+COPY --from=build /home/ctng/x-tools/${SAMPLE_NAME} /opt/${SAMPLE_NAME}-cross
+COPY --from=build /home/ctng/x-tools/HOST-${SAMPLE_NAME}/${SAMPLE_NAME} /opt/${SAMPLE_NAME}-native
 
 
 
