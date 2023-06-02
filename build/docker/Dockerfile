@@ -58,6 +58,7 @@ RUN ct-ng build --quiet -j "$(nproc)"
 
 USER root
 ADD create_links.sh /tmp/create_links.sh
+RUN bash /tmp/create_links.sh "/home/ctng/x-tools/${SAMPLE_NAME}" "${SAMPLE_NAME}"
 RUN bash /tmp/create_links.sh "/home/ctng/x-tools/HOST-${SAMPLE_NAME}/${SAMPLE_NAME}" "${SAMPLE_NAME}"
 
 
