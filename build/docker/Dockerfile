@@ -29,6 +29,8 @@ ARG CTNG_GID=1000
 RUN groupadd -g $CTNG_GID ctng
 RUN useradd -d /home/ctng -m -g $CTNG_GID -u $CTNG_UID -s /bin/bash ctng
 
+RUN echo "FFFFFF"
+
 ARG SAMPLE_NAME
 ARG CANADIAN_SAMPLE="${SAMPLE_NAME},${SAMPLE_NAME}"
 
