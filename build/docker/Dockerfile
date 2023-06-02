@@ -78,7 +78,8 @@ COPY --from=build /tmp/${SAMPLE_NAME}-cross.tar.gz /tmp
 COPY --from=build /tmp/${SAMPLE_NAME}-native.tar.gz /tmp
 
 RUN apt update && apt install -y tar
-RUN tar xfvz /tmp/${SAMPLE_NAME}-native.tar.gz
+RUN tar xfvz /tmp/${SAMPLE_NAME}-native.tar.gz -C /opt
+RUN ls /opt && false
 
 
 
