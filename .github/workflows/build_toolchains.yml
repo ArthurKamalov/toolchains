@@ -55,10 +55,6 @@ jobs:
         uses: docker/setup-buildx-action@4b4e9c3e2d4531116a6f8ba8e71fc6e2cb6e6c8c # v2.0.0
         with:
           driver-opts: network=host
-
-      - name: Build toolchain
-        run: |
-          bash build/build_toolchain.sh ${{ matrix.sample_name }}
           
       - name: Cache toolchains
         id: cache_toolchain
@@ -66,6 +62,11 @@ jobs:
         with:
           path: ${{ matrix.sample_name }}-*.tar.gz
           key: ${{ matrix.sample_name }}-${{ hashFiles(build/**/*) }}
+
+      - name: Build toolchain
+        if: steps.cache_toolchain.outputs.cache-hit != 'true'
+        run: |
+          bash build/build_toolchain.sh ${{ matrix.sample_name }}
 
       - name: Save toolchains as artifacts
         uses: actions/upload-artifact@v3
