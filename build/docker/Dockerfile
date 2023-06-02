@@ -44,7 +44,7 @@ USER ctng
 WORKDIR /home/ctng
 
 RUN ct-ng ${SAMPLE_NAME}
-RUN ct-ng build --quiet -j "$(nproc)" STOP=companion_tools_for_build
+RUN ct-ng build --quiet -j "$(nproc)"
 
 RUN cp -a "samples/${SAMPLE_NAME}" "samples/${CANADIAN_SAMPLE}"
 RUN echo "CT_CANADIAN=y" >> "samples/${CANADIAN_SAMPLE}/crosstool.config"
