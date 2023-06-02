@@ -74,6 +74,9 @@ jobs:
         id: create_image_meta
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
+          tags: |
+            type=ref,event=branch
+            type=ref,event=tag
           images: ${{ env.REGISTRY }}/${{ github.repository }}/${{ matrix.sample_name }}
 
       - name: Log in to the Container registry
