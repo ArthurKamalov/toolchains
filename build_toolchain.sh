@@ -5,7 +5,7 @@ SAMPLE_NAME="${1}"
 
 NAME="toolchain-${SAMPLE_NAME}"
 
-docker buildx build -t "${NAME}" --build-arg="SAMPLE_NAME=${SAMPLE_NAME}" "${PARENT_DIR}/build"
+docker buildx build -t "${NAME}" --load --build-arg="SAMPLE_NAME=${SAMPLE_NAME}" "${PARENT_DIR}/build"
 
 docker rm -f "${NAME}"
 docker create --name "${NAME}" "${NAME}"
