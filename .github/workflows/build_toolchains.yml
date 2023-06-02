@@ -32,11 +32,11 @@ jobs:
       matrix:
         sample_name:
           - x86_64-unknown-linux-gnu
-          - x86_64-unknown-linux-musl
-          - aarch64-unknown-linux-gnu
-          - aarch64-unknown-linux-musl
-          - armv7-unknown-linux-gnueabihf
-          - armv7-unknown-linux-musleabihf
+#          - x86_64-unknown-linux-musl
+#          - aarch64-unknown-linux-gnu
+#          - aarch64-unknown-linux-musl
+#          - armv7-unknown-linux-gnueabihf
+#          - armv7-unknown-linux-musleabihf
 
     env:
       DOCKER_BUILDKIT: 1
@@ -77,7 +77,7 @@ jobs:
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
           tags: |
-            type=sha,format=long,prefix=
+            type=sha,format=long,prefix=,enable=${{ github.ref_type == 'branch' }}
             type=ref,event=tag
           images: |
             name=${{ env.REGISTRY }}/${{ github.repository }}/dev/${{ matrix.sample_name }},enable=${{ github.ref_type == 'branch' }}
