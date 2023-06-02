@@ -61,7 +61,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ matrix.sample_name }}-*.tar.gz
-          key: ${{ matrix.sample_name }}-${{ hashFiles(build/**/*) }}
+          key: ${{ matrix.sample_name }}-${{ hashFiles('build/**/*') }}
 
       - name: Build toolchain
         if: steps.cache_toolchain.outputs.cache-hit != 'true'
