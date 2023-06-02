@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:22.04 as build
 
 ENV DEBIAN_FRONTEND="noninteractive"
 RUN apt-get update
@@ -71,6 +71,14 @@ USER ctng
 #RUN tar cvfz "/tmp/${SAMPLE_NAME}-cross.tar.gz" -C "/home/ctng/x-tools" "${SAMPLE_NAME}"
 #RUN tar cvfz "/tmp/${SAMPLE_NAME}-native.tar.gz" -C "/home/ctng/x-tools/HOST-${SAMPLE_NAME}" "${SAMPLE_NAME}"
 
-#RUN touch "/tmp/${SAMPLE_NAME}-cross.tar.gz"
-#RUN touch "/tmp/${SAMPLE_NAME}-native.tar.gz"
+RUN touch "/tmp/${SAMPLE_NAME}-cross.tar.gz"
+RUN touch "/tmp/${SAMPLE_NAME}-native.tar.gz"
+
+
+
+FROM ubuntu:22.04
+COPY --from=build /tmp/${SAMPLE_NAME}-cross.tar.gz /tmp
+COPY --from=build /tmp/${SAMPLE_NAME}-native.tar.gz /tmp
+
+
 
