@@ -6,7 +6,7 @@ SAMPLE_NAME="${1}"
 
 NAME="toolchain-${SAMPLE_NAME}"
 
-docker buildx build -t "${NAME}" --load --build-arg="SAMPLE_NAME=${SAMPLE_NAME}" --cache-from=type=gha --cache-to=type=gha "${BUILD_DIR}/docker"
+docker buildx build -t "${NAME}" --load --build-arg="SAMPLE_NAME=${SAMPLE_NAME}" --cache-from=type=gha --cache-to=type=gha,mode=max "${BUILD_DIR}/docker"
 
 docker rm -f "${NAME}"
 docker create --name "${NAME}" "${NAME}"
