@@ -76,5 +76,5 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: toolchains-${{ matrix.sample_name }}
-          path: ${{ matrix.sample_name }}-*.tar.gz
+          path: ${{ matrix.sample_name }}-native.tar.gz
       
