@@ -16,7 +16,7 @@ RUN gpg2 --import public_key.gpg
 
 RUN gpg2 --verify crosstool-ng-${CROSSTOOLS_VERSION}.tar.bz2.sig
 
-RUN tar xfv crosstool-ng-${CROSSTOOLS_VERSION}.tar.bz2
+RUN tar xf crosstool-ng-${CROSSTOOLS_VERSION}.tar.bz2
 
 WORKDIR crosstool-ng-${CROSSTOOLS_VERSION}
 
@@ -63,8 +63,8 @@ RUN bash /tmp/create_links.sh "/home/ctng/x-tools/HOST-${SAMPLE_NAME}/${SAMPLE_N
 
 USER ctng
 
-RUN tar cvfz "/tmp/${SAMPLE_NAME}-cross.tar.gz" -C "/home/ctng/x-tools" "${SAMPLE_NAME}"
-RUN tar cvfz "/tmp/${SAMPLE_NAME}-native.tar.gz" -C "/home/ctng/x-tools/HOST-${SAMPLE_NAME}" "${SAMPLE_NAME}"
+RUN tar cfz "/tmp/${SAMPLE_NAME}-cross.tar.gz" -C "/home/ctng/x-tools" "${SAMPLE_NAME}"
+RUN tar cfz "/tmp/${SAMPLE_NAME}-native.tar.gz" -C "/home/ctng/x-tools/HOST-${SAMPLE_NAME}" "${SAMPLE_NAME}"
 
 #RUN touch "/tmp/${SAMPLE_NAME}-cross.tar.gz"
 #RUN touch "/tmp/${SAMPLE_NAME}-native.tar.gz"
