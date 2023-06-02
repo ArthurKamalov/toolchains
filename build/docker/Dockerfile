@@ -66,7 +66,7 @@ RUN echo 'CT_HOST="${SAMPLE_NAME}"' >> "samples/${CANADIAN_SAMPLE}/crosstool.con
 
 USER ctng
 
-RUN tar cvfz "/tmp/${SAMPLE_NAME}-cross.tar.gz" -C "/home/ctng/x-tools" "${SAMPLE_NAME}"
+#RUN tar cvfz "/tmp/${SAMPLE_NAME}-cross.tar.gz" -C "/home/ctng/x-tools" "${SAMPLE_NAME}"
 #RUN tar cvfz "/tmp/${SAMPLE_NAME}-native.tar.gz" -C "/home/ctng/x-tools/HOST-${SAMPLE_NAME}" "${SAMPLE_NAME}"
 
 #RUN touch "/tmp/${SAMPLE_NAME}-cross.tar.gz"
