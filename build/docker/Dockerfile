@@ -77,6 +77,7 @@ RUN touch "/tmp/${SAMPLE_NAME}-native.tar.gz"
 
 
 FROM ubuntu:22.04
+ARG SAMPLE_NAME
 COPY --from=build /tmp/${SAMPLE_NAME}-cross.tar.gz /tmp
 COPY --from=build /tmp/${SAMPLE_NAME}-native.tar.gz /tmp
 
