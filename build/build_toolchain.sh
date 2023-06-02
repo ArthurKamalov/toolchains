@@ -7,8 +7,8 @@ SAMPLE_NAME="${1}"
 NAME="toolchain-${SAMPLE_NAME}"
 
 docker buildx build -t "${NAME}" --load --build-arg="SAMPLE_NAME=${SAMPLE_NAME}" \
-  --cache-from="type=gha,scope=$GITHUB_REF_NAME-${SAMPLE_NAME}" \
-  --cache-to=type="gha,mode=min,scope=$GITHUB_REF_NAME-${SAMPLE_NAME}" \
+  --cache-from="type=gha,scope=$GITHUB_REF_NAME-${SAMPLE_NAME}-1" \
+  --cache-to=type="gha,mode=min,scope=$GITHUB_REF_NAME-${SAMPLE_NAME}-1" \
   "${BUILD_DIR}/docker"
 
 docker rm -f "${NAME}"
