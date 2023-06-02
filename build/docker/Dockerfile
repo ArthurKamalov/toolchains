@@ -72,7 +72,7 @@ RUN tar cfz "/tmp/${SAMPLE_NAME}-native.tar.gz" -C "/home/ctng/x-tools/HOST-${SA
 
 
 
-FROM ubuntu:22.04
+FROM ubuntu:22.04 as ddd
 ARG SAMPLE_NAME
 COPY --from=build /tmp/${SAMPLE_NAME}-cross.tar.gz /tmp
 COPY --from=build /tmp/${SAMPLE_NAME}-native.tar.gz /tmp
@@ -80,6 +80,10 @@ COPY --from=build /tmp/${SAMPLE_NAME}-native.tar.gz /tmp
 RUN apt update && apt install -y tar
 RUN mkdir -p /opt/x-tools
 RUN tar xfvz /tmp/${SAMPLE_NAME}-native.tar.gz -C /opt/x-tools
+
+
+FROM ubuntu:22.04
+COPY --from=ddd /opt/x-tools /opt/x-tools
 
 
 
