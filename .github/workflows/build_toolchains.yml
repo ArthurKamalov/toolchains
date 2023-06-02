@@ -80,8 +80,8 @@ jobs:
             type=sha,format=long,prefix=
             type=ref,event=tag
           images: |
-            name=${{ env.REGISTRY }}/${{ github.repository }}/dev/${{ matrix.sample_name }},enable=$${{ github.ref_type == 'branch' }}
-            name=${{ env.REGISTRY }}/${{ github.repository }}/${{ matrix.sample_name }},enable=$${{ github.ref_type == 'tag' }}
+            name=${{ env.REGISTRY }}/${{ github.repository }}/dev/${{ matrix.sample_name }},enable=${{ github.ref_type == 'branch' }}
+            name=${{ env.REGISTRY }}/${{ github.repository }}/${{ matrix.sample_name }},enable=${{ github.ref_type == 'tag' }}
 
       - name: Log in to the Container registry
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
