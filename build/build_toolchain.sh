@@ -2,12 +2,12 @@ set -e
 
 SCRIPT_PATH="$(realpath "${0}")"
 PARENT_DIR="$(dirname "${SCRIPT_PATH}")"
-SAMPLE_NAME="${1}"
-SAMPLE_NAME="${1}"
+HOST="${1}"
+TARGET="${2}"
 
-NAME="toolchain-${SAMPLE_NAME}"
+NAME="toolchain-${HOST}-${TARGET}"
 
-case "$SAMPLE_NAME" in
+case "$HOST" in
   x86_64-*-*-*)
     TOOLCHAIN_PLATFORM="linux/amd64"
     ;;
@@ -18,12 +18,12 @@ case "$SAMPLE_NAME" in
     TOOLCHAIN_PLATFORM="linux/arm/v7"
   ;;
   *)
-    echo -e "Can not determine CPU architecture by SAMPLE_NAME: '${SAMPLE_NAME}'"
+    echo -e "Can not determine CPU architecture by HOST: '${HOST}'"
     exit 1
   ;;
 esac
 
-case "$SAMPLE_NAME" in
+case "$HOST" in
   *-*-*-gnu*)
     DISTRO="ubuntu"
     ;;
@@ -31,15 +31,16 @@ case "$SAMPLE_NAME" in
     DISTRO="alpine"
   ;;
   *)
-    echo -e "Can not determine distro by SAMPLE_NAME: '${SAMPLE_NAME}'"
+    echo -e "Can not determine distro by HOST: '${HOST}'"
     exit 1
   ;;
 esac
 
-GHA_SCOPE="toolchain-${SAMPLE_NAME}-8"
+GHA_SCOPE="toolchain-${HOST}-${TARGET}-8"
 
 docker buildx build -t "${NAME}" \
-  --build-arg="SAMPLE_NAME=${SAMPLE_NAME}" \
+  --build-arg="HOST=${HOST}" \
+  --build-arg="TARGET=${TARGET}" \
   --build-arg="DISTRO=${DISTRO}" \
   --build-arg="TOOLCHAIN_TYPE=native" \
   --build-arg="TOOLCHAIN_PLATFORM=${TOOLCHAIN_PLATFORM}" \

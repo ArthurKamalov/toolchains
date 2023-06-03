@@ -34,15 +34,22 @@ jobs:
     strategy:
       matrix:
         toolchain:
-          - x86_64-unknown-linux-gnu
-          - x86_64-unknown-linux-musl
-          - aarch64-unknown-linux-gnu
-          - aarch64-unknown-linux-musl
-          - armv7-unknown-linux-gnueabihf
-          - armv7-unknown-linux-musleabihf
+          - host: x86_64-unknown-linux-gnu
+            target: x86_64-unknown-linux-gnu
+          - host: x86_64-unknown-linux-musl
+            target: x86_64-unknown-linux-musl
+          - host: aarch64-unknown-linux-gnu
+            target: aarch64-unknown-linux-gnu
+          - host: aarch64-unknown-linux-musl
+            target: aarch64-unknown-linux-musl
+          - host: armv7-unknown-linux-gnueabihf
+            target: armv7-unknown-linux-gnueabihf
+          - host: armv7-unknown-linux-musleabihf
+            target: armv7-unknown-linux-musleabihf
 
     env:
       REGISTRY: ghcr.io
+      TOOLCHAIN_NAME: ${{ matrix.toolchain.host }}-${{ matrix.toolchain.target }}
 
     steps:
       - name: Checkout repository
@@ -71,8 +78,8 @@ jobs:
             type=sha,format=long,prefix=,enable=${{ github.ref_type == 'branch' }}
             type=ref,event=tag
           images: |
-            name=${{ env.REGISTRY }}/${{ github.repository }}/dev/${{ matrix.toolchain }},enable=${{ github.ref_type == 'branch' }}
-            name=${{ env.REGISTRY }}/${{ github.repository }}/${{ matrix.toolchain }},enable=${{ github.ref_type == 'tag' }}
+            name=${{ env.REGISTRY }}/${{ github.repository }}/dev/${{ env.TOOLCHAIN_NAME }},enable=${{ github.ref_type == 'branch' }}
+            name=${{ env.REGISTRY }}/${{ github.repository }}/${{ env.TOOLCHAIN_NAME }},enable=${{ github.ref_type == 'tag' }}
 
       - name: Log in to the Container registry
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
@@ -85,7 +92,7 @@ jobs:
         uses: crazy-max/ghaction-github-runtime@715c25b40ccc0df9b62bfa8be3ccc57d09dbc4b1
 
       - name: Build
-        run: bash build/build_toolchain.sh ${{ matrix.toolchain }}
+        run: bash build/build_toolchain.sh ${{ matrix.toolchain.host }} ${{ matrix.toolchain.target }}
 
 #      - name: Build and push
 #        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671 # v4.0.0

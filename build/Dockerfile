@@ -1,4 +1,3 @@
-ARG SAMPLE_NAME
 ARG DISTRO
 ARG TOOLCHAIN_TYPE
 ARG TOOLCHAIN_PLATFORM
@@ -37,35 +36,35 @@ RUN make DESTDIR=/tmp/ct-ng install
 FROM base as build
 COPY --from=ctosstools_ng_build /tmp/ct-ng /
 
-ARG SAMPLE_NAME
-ARG CANADIAN_SAMPLE="${SAMPLE_NAME},${SAMPLE_NAME}"
+ARG HOST
+ARG TARGET
 
 WORKDIR /home/ctng
-ADD samples/${SAMPLE_NAME} samples/${SAMPLE_NAME}
+ADD samples/${HOST} samples/${HOST}
 
 USER root
 RUN chown -R ctng samples
 
 USER ctng
 
-RUN ct-ng ${SAMPLE_NAME}
+RUN ct-ng ${HOST}
 RUN ct-ng build --quiet -j "$(nproc)"
 
 
-RUN cp -a "samples/${SAMPLE_NAME}" "samples/${CANADIAN_SAMPLE}"
-RUN echo "CT_CANADIAN=y" >> "samples/${CANADIAN_SAMPLE}/crosstool.config"
-RUN echo 'CT_HOST="${SAMPLE_NAME}"' >> "samples/${CANADIAN_SAMPLE}/crosstool.config"
+RUN cp -a "samples/${TARGET}" "samples/${HOST},${TARGET}"
+RUN echo "CT_CANADIAN=y" >> "samples/${HOST},${TARGET}/crosstool.config"
+RUN echo 'CT_HOST="${HOST}"' >> "samples/${HOST},${TARGET}/crosstool.config"
 
 
-ENV PATH="/home/ctng/x-tools/${SAMPLE_NAME}/bin:${PATH}"
-RUN ct-ng "${CANADIAN_SAMPLE}"
+ENV PATH="/home/ctng/x-tools/${HOST}/bin:${PATH}"
+RUN ct-ng "${HOST},${TARGET}"
 RUN ct-ng build --quiet -j "$(nproc)"
 
 RUN mkdir -p /tmp/cross
-RUN cp -a /home/ctng/x-tools/${SAMPLE_NAME} /tmp/cross
+RUN cp -a /home/ctng/x-tools/${HOST} /tmp/cross
 
 RUN mkdir -p /tmp/native
-RUN cp -a /home/ctng/x-tools/HOST-${SAMPLE_NAME}/${SAMPLE_NAME} /tmp/native
+RUN cp -a /home/ctng/x-tools/HOST-${HOST}/${TARGET} /tmp/native
 
 FROM scratch as toolchain_cross
 COPY --from=build /tmp/cross /tmp/toolchain
