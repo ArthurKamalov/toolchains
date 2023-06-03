@@ -30,9 +30,8 @@ RUN make -j "$(nproc)"
 RUN make DESTDIR=/tmp/ct-ng install
 
 FROM base
-COPY --from=build /tmp/ct-ng /
-
 WORKDIR /home/ctng
+COPY --from=build /tmp/ct-ng /
 
 
 
