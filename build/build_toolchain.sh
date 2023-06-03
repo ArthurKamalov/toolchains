@@ -35,14 +35,14 @@ case "$SAMPLE_NAME" in
   ;;
 esac
 
-GHA_SCOPE="toolchain-8"
+GHA_SCOPE="toolchain-${SAMPLE_NAME}-8"
 
 docker buildx build -t "${NAME}" \
   --build-arg="SAMPLE_NAME=${SAMPLE_NAME}" \
   --build-arg="DISTRO=${DISTRO}" \
   --build-arg="TOOLCHAIN_TYPE=native" \
   --build-arg="TOOLCHAIN_PLATFORM=${TOOLCHAIN_PLATFORM}" \
-  --cache-from="type=gha,scope=${GHA_SCOPE}-${SAMPLE_NAME}" \
-  --cache-to=type="gha,mode=min,scope=${GHA_SCOPE}-${SAMPLE_NAME}" \
+  --cache-from="type=gha,scope=${GHA_SCOPE}" \
+  --cache-to=type="gha,mode=min,scope=${GHA_SCOPE}" \
   "${PARENT_DIR}" --progress=plain --load
 

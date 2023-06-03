@@ -34,18 +34,12 @@ jobs:
     strategy:
       matrix:
         toolchains:
-          - sample_name: x86_64-unknown-linux-gnu
-            distro: ubuntu
-          - sample_name: sample_name:x86_64-unknown-linux-musl
-            distro: alpine
-          - sample_name: aarch64-unknown-linux-gnu
-            distro: ubuntu
-          - sample_name: aarch64-unknown-linux-musl
-            distro: alpine
-          - sample_name: armv7-unknown-linux-gnueabihf
-            distro: ubuntu
-          - sample_name: armv7-unknown-linux-musleabihf
-            distro: alpine
+          - x86_64-unknown-linux-gnu
+          - sample_name:x86_64-unknown-linux-musl
+          - aarch64-unknown-linux-gnu
+          - aarch64-unknown-linux-musl
+          - armv7-unknown-linux-gnueabihf
+          - armv7-unknown-linux-musleabihf
 
     env:
       REGISTRY: ghcr.io
@@ -77,8 +71,8 @@ jobs:
             type=sha,format=long,prefix=,enable=${{ github.ref_type == 'branch' }}
             type=ref,event=tag
           images: |
-            name=${{ env.REGISTRY }}/${{ github.repository }}/dev/${{ matrix.toolchains.sample_name }},enable=${{ github.ref_type == 'branch' }}
-            name=${{ env.REGISTRY }}/${{ github.repository }}/${{ matrix.toolchains.sample_name }},enable=${{ github.ref_type == 'tag' }}
+            name=${{ env.REGISTRY }}/${{ github.repository }}/dev/${{ matrix.sample_name }},enable=${{ github.ref_type == 'branch' }}
+            name=${{ env.REGISTRY }}/${{ github.repository }}/${{ matrix.sample_name }},enable=${{ github.ref_type == 'tag' }}
 
       - name: Log in to the Container registry
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
@@ -91,7 +85,7 @@ jobs:
         uses: crazy-max/ghaction-github-runtime@715c25b40ccc0df9b62bfa8be3ccc57d09dbc4b1
 
       - name: Build
-        run: bash build/build_toolchain.sh ${{ matrix.toolchains.sample_name }}
+        run: bash build/build_toolchain.sh ${{ matrix.sample_name }}
 
 #      - name: Build and push
 #        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671 # v4.0.0
