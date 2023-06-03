@@ -6,7 +6,7 @@ SAMPLE_NAME="${1}"
 
 NAME="toolchain-${SAMPLE_NAME}"
 
-CROSSTOOLS_SCOPE="crosstools-ng-3"
+CROSSTOOLS_SCOPE="crosstools-ng-4"
 
 docker buildx build -t "crossstools-ng" --load \
   --cache-from="type=gha,scope=$CROSSTOOLS_SCOPE" \
