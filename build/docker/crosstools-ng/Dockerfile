@@ -33,7 +33,7 @@ FROM base
 WORKDIR /home/ctng
 COPY --from=build /tmp/ct-ng /
 
-RUN sleep 30
+RUN sleep 5
 
 
 
