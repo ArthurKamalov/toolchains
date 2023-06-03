@@ -31,9 +31,10 @@ RUN make DESTDIR=/tmp/ct-ng install
 
 FROM base
 WORKDIR /home/ctng
+USER ctng
 COPY --from=build /tmp/ct-ng /
 
-RUN sleep 60
+#RUN sleep 60
 
 
 
