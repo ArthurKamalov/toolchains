@@ -3,17 +3,18 @@ set -e
 SCRIPT_PATH="$(realpath "${0}")"
 PARENT_DIR="$(dirname "${SCRIPT_PATH}")"
 SAMPLE_NAME="${1}"
+SAMPLE_NAME="${1}"
 
 NAME="toolchain-${SAMPLE_NAME}"
 
 case "$SAMPLE_NAME" in
-  *x86_64*)
-    TOOLCHAIN_PLATFORM="linux/arm64"
+  x86_64-*-*-*)
+    TOOLCHAIN_PLATFORM="linux/amd64"
     ;;
-  *aarch64*)
+  *aarch64-*-*-*)
     TOOLCHAIN_PLATFORM="linux/arm64/v8"
   ;;
-  *armv7*)
+  *armv7-*-*-*)
     TOOLCHAIN_PLATFORM="linux/arm/v7"
   ;;
   *)
@@ -23,10 +24,10 @@ case "$SAMPLE_NAME" in
 esac
 
 case "$SAMPLE_NAME" in
-  *-gnu*)
+  *-*-*-gnu*)
     DISTRO="ubuntu"
     ;;
-  *-musl*)
+  *-*-*-musl*)
     DISTRO="alpine"
   ;;
   *)

@@ -61,18 +61,27 @@ ENV PATH="/home/ctng/x-tools/${SAMPLE_NAME}/bin:${PATH}"
 RUN ct-ng "${CANADIAN_SAMPLE}"
 RUN ct-ng build --quiet -j "$(nproc)"
 
+RUN mkdir -p /tmp/cross
+RUN cp -a /home/ctng/x-tools/${SAMPLE_NAME} /tmp/cross
 
-FROM --platform=${TOOLCHAIN_PLATFORM} ubuntu:22.04 as toolchain_cross_ubuntu
-COPY --from=build /home/ctng/x-tools/${SAMPLE_NAME} /opt/${SAMPLE_NAME}
+RUN mkdir -p /tmp/native
+RUN cp -a /home/ctng/x-tools/HOST-${SAMPLE_NAME}/${SAMPLE_NAME} /tmp/native
 
-FROM --platform=${TOOLCHAIN_PLATFORM} ubuntu:22.04 as toolchain_native_ubuntu
-COPY --from=build /home/ctng/x-tools/HOST-${SAMPLE_NAME}/${SAMPLE_NAME} /opt/${SAMPLE_NAME}
+FROM scratch as toolchain_cross
+COPY --from=build /tmp/cross /tmp/toolchain
 
-FROM --platform=${TOOLCHAIN_PLATFORM} alpine:3.18 as toolchain_native_alpine
-COPY --from=build /home/ctng/x-tools/HOST-${SAMPLE_NAME}/${SAMPLE_NAME} /opt/${SAMPLE_NAME}
+FROM scratch as toolchain_native
+COPY --from=build /tmp/native /tmp/toolchain
 
-FROM toolchain_${TOOLCHAIN_TYPE}_${DISTRO}
+FROM toolchain_${TOOLCHAIN_TYPE} as toolchain
 
+
+FROM --platform=${TOOLCHAIN_PLATFORM} ubuntu:22.04 as base_ubuntu
+FROM --platform=${TOOLCHAIN_PLATFORM} alpine:3.18 as base_alpine
+
+FROM base_${DISTRO}
+RUN mkdir -p /opt/x-tools
+COPY --from=toolchain /tmp/toolchain/. /opt/x-tools
 
 
 
