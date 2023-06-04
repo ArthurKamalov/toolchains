@@ -45,7 +45,7 @@ jobs:
 
     env:
       REGISTRY: ghcr.io
-      TOOLCHAIN_NAME: ${{ matrix.toolchain.host }}-${{ matrix.toolchain.target }}
+      TOOLCHAIN_NAME: ${{ matrix.toolchain.host }}_${{ matrix.toolchain.target }}
 
     steps:
       - name: Checkout repository
