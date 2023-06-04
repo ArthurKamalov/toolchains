@@ -62,19 +62,8 @@ ENV PATH="/home/ctng/x-tools/${HOST}/bin:${PATH}"
 RUN ct-ng "${HOST},${TARGET}"
 RUN ct-ng build --quiet -j "$(nproc)"
 
-RUN mkdir -p /tmp/cross
-RUN cp -a /home/ctng/x-tools/${HOST} /tmp/cross
-
-RUN mkdir -p /tmp/native
-RUN cp -a /home/ctng/x-tools/HOST-${HOST}/${TARGET} /tmp/native
-
-FROM scratch as toolchain_cross
-COPY --from=build /tmp/cross /tmp/toolchain
-
-FROM scratch as toolchain_native
-COPY --from=build /tmp/native /tmp/toolchain
-
-FROM toolchain_${TOOLCHAIN_TYPE} as toolchain
+RUN mkdir -p /tmp/toolchain
+RUN cp -a /home/ctng/x-tools/HOST-${HOST}/${TARGET} /tmp/toolchain
 
 
 FROM --platform=${TOOLCHAIN_PLATFORM} ubuntu:22.04 as base_ubuntu
@@ -82,21 +71,7 @@ FROM --platform=${TOOLCHAIN_PLATFORM} alpine:3.18 as base_alpine
 
 FROM base_${DISTRO}
 RUN mkdir -p /opt/x-tools
-COPY --from=toolchain /tmp/toolchain/. /opt/x-tools
-
-
-
-
-#FROM ubuntu:22.04 as distro-ubuntu
-#
-#FROM alpine:3.18 as distro-alpine
-#
-#FROM distro-$DISTRO
-#
-#ARG SAMPLE_NAME
-#COPY --from=build /home/ctng/x-tools/${SAMPLE_NAME} /opt/${SAMPLE_NAME}-cross
-#COPY --from=build /home/ctng/x-tools/HOST-${SAMPLE_NAME}/${SAMPLE_NAME} /opt/${SAMPLE_NAME}-native
-
+COPY --from=build /tmp/toolchain/. /opt/x-tools
 
 
 

@@ -5,8 +5,6 @@ PARENT_DIR="$(dirname "${SCRIPT_PATH}")"
 HOST="${1}"
 TARGET="${2}"
 
-NAME="toolchain-${HOST}-${TARGET}"
-
 case "$HOST" in
   x86_64-*-*-*)
     TOOLCHAIN_PLATFORM="linux/amd64"
@@ -36,9 +34,10 @@ case "$HOST" in
   ;;
 esac
 
+IMAGE_NAME="${HOST}_${TARGET}"
 GHA_SCOPE="toolchain-${HOST}-${TARGET}-8"
 
-docker buildx build -t "${NAME}" \
+docker buildx build -t "${IMAGE_NAME}" \
   --build-arg="HOST=${HOST}" \
   --build-arg="TARGET=${TARGET}" \
   --build-arg="DISTRO=${DISTRO}" \
@@ -47,4 +46,6 @@ docker buildx build -t "${NAME}" \
   --cache-from="type=gha,scope=${GHA_SCOPE}" \
   --cache-to=type="gha,mode=min,scope=${GHA_SCOPE}" \
   "${PARENT_DIR}" --progress=plain --load
+
+echo "Image ${IMAGE_NAME} is built"
 
