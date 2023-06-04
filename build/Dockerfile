@@ -37,7 +37,6 @@ FROM base as build
 COPY --from=ctosstools_ng_build /tmp/ct-ng /
 
 ARG HOST
-ARG TARGET
 
 WORKDIR /home/ctng
 ADD samples/${HOST} samples/${HOST}
@@ -49,6 +48,9 @@ USER ctng
 
 RUN ct-ng ${HOST}
 RUN ct-ng build --quiet -j "$(nproc)"
+
+ARG TARGET
+ADD samples/${TARGET} samples/${TARGET}
 
 
 RUN cp -a "samples/${TARGET}" "samples/${HOST},${TARGET}"
