@@ -3,7 +3,9 @@ set -e
 SCRIPT_PATH="$(realpath "${0}")"
 PARENT_DIR="$(dirname "${SCRIPT_PATH}")"
 HOST="${1}"
+shift
 TARGET="${2}"
+shift
 
 case "$HOST" in
   x86_64-*-*-*)
