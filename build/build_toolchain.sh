@@ -4,7 +4,7 @@ SCRIPT_PATH="$(realpath "${0}")"
 PARENT_DIR="$(dirname "${SCRIPT_PATH}")"
 HOST="${1}"
 shift
-TARGET="${2}"
+TARGET="${1}"
 shift
 
 case "$HOST" in
