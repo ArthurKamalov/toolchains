@@ -34,10 +34,9 @@ case "$HOST" in
   ;;
 esac
 
-IMAGE_NAME="${HOST}_${TARGET}"
 GHA_SCOPE="toolchain-${HOST}-${TARGET}-8"
 
-docker buildx build -t "${IMAGE_NAME}" \
+docker buildx build \
   --build-arg="HOST=${HOST}" \
   --build-arg="TARGET=${TARGET}" \
   --build-arg="DISTRO=${DISTRO}" \
@@ -45,7 +44,7 @@ docker buildx build -t "${IMAGE_NAME}" \
   --build-arg="TOOLCHAIN_PLATFORM=${TOOLCHAIN_PLATFORM}" \
   --cache-from="type=gha,scope=${GHA_SCOPE}" \
   --cache-to=type="gha,mode=min,scope=${GHA_SCOPE}" \
-  "${PARENT_DIR}" --progress=plain --load
-
-echo "Image ${IMAGE_NAME} is built"
+  --progress=plain \
+  "$@" \
+  "${PARENT_DIR}"
 
